@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import validatorJWT from "../tools/validatorJWT";
+import * as globalTypes from "../types/global.d";
 
 const authValidator = async (
   req: Request,
@@ -12,8 +13,8 @@ const authValidator = async (
       const payload: any = await validatorJWT(
         req.cookies.accessToken as string
       );
-      if (payload._id) {
-        req.userID = payload._id;
+      if (payload.email) {
+        req.userEmail = payload.email;
         next();
       } else {
         next(createHttpError(401, "Token not valid"));
